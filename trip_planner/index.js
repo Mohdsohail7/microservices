@@ -1,28 +1,32 @@
+const express = require("express");
+const cors = require("cors");
 require("dotenv").config();
-const axiosInstance = require("./lib/axios");
 
-axiosInstance.get("/health")
-.then((response) => console.log(response.data))
-.catch((error) => console.log("Error fetching axios error", error));
+const { createItinerary, getItinerary } = require("./controllers/dataController");
+const { getFlights, getHotels, getSites } = require("./controllers/itineraryController");
+const { sequelize } = require("./models");
 
+const app = express();
 
-// Implement the getFlights function. This function takes in two parameters: the origin and the destination.
-const getFlights = async(origin, destination) => {
-    try {
-        const response = await axiosInstance.get('/flights/search', {
-            params: {
-                origin: origin,
-                destination: destination
-            },
-        });
-        return response.data;
-    } catch (error) {
-        console.log(error);
-    }
-};
+app.use(express.json());
+app.use(cors());
 
-getFlights("bengaluru", "dehradun")
-.then((flights) => console.log("Flights data-->", flights))
-.catch((error) => {
-    console.log(error);
+// routes
+app.post("/itinerary", createItinerary);
+app.get("/itinerary/:id", getItinerary);
+
+app.get("/data/flights", getFlights);
+app.get("/data/hotels", getHotels);
+app.get("/data/sites", getSites);
+
+sequelize.authenticate().then(() => {
+    console.log("database connected.");
+}).catch((error) =>{
+    console.log("Unable to connect database", error);
+}
+);
+
+const PORT = process.env.PORT;
+app.listen(PORT, () => {
+    console.log("Server is running at port -> ", PORT);
 });
