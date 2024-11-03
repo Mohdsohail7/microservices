@@ -1,5 +1,5 @@
 
-module.exports = (DataTypes, sequelize) => {
+module.exports = (sequelize, DataTypes) => {
     const flight = sequelize.define("flight", 
     {
         origin: DataTypes.STRING,
