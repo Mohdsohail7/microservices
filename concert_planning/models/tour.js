@@ -1,5 +1,5 @@
-Module.exports = (seqelize, DataTypes) => {
-    const tour = seqelize.define("tour", {
+module.exports = (sequelize, DataTypes) => {
+    const tour = sequelize.define("tour", {
         name: DataTypes.STRING,
 
     },

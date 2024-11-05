@@ -29,7 +29,7 @@ const createTour = async(req, res) => {
 
         if (merchandiseStalls && merchandiseStalls.length > 0) {
             for (const merchandiseStall of merchandiseStalls) {
-                const savedMerchandiseStall = await afterPartiesModel.create(merchandiseStall);
+                const savedMerchandiseStall = await merchandiseStallsModel.create(merchandiseStall);
                 await tourItemModel.create({
                     tourId: newTour.id,
                     itemId: savedMerchandiseStall.id,

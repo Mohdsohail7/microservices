@@ -1,4 +1,4 @@
-Module.exports = (sequelize, DataTypes) => {
+module.exports = (sequelize, DataTypes) => {
     const tourItem = sequelize.define("tourItem", {
         tourId: {
             type: DataTypes.INTEGER,

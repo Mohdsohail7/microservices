@@ -1,6 +1,6 @@
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    await queryInterface.createTable('tourItem', {
+    await queryInterface.createTable('tourItems', {  
       id: { type: Sequelize.INTEGER, autoIncrement: true, primaryKey: true },
       tourId: {
         type: Sequelize.INTEGER,
@@ -22,6 +22,6 @@ module.exports = {
     });
   },
   down: async (queryInterface) => {
-    await queryInterface.dropTable('tourItem');
+    await queryInterface.dropTable('tourItems');  
   },
 };
