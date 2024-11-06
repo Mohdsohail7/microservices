@@ -1,4 +1,55 @@
 const axiosInstance = require("../lib/axios");
+const { validateConcertsQueryParams, validateMerchandiseStallsQueryParams, validateAfterPartiesQueryParams  } = require("../validations/index");
+
+
+const getConcertsByArtistAndCity = async(req, res) => {
+    const inputErrors = validateConcertsQueryParams(req.query);
+
+    if (inputErrors.length > 0) {
+        return res.status(400).json({inputErrors});
+    }
+    try {
+        const { artist, city } = req.query;
+        const response = await axiosInstance.get(`/concerts/search?artist=${artist}&city=${city}`);
+
+        res.json(response.data);
+    } catch (error) {
+        res.status(500).json({ error: "Failed to fetch concert details artist and city"});
+    }
+}
+
+const getMerchandiseStallsByStallName = async(req,res) => {
+    const inputErrors = validateMerchandiseStallsQueryParams(req.query);
+
+    if (inputErrors.length > 0) {
+        return res.status(400).json({ inputErrors });
+    }
+    try {
+        const { stallName } = req.query;
+        const response = await axiosInstance.get(`/merchandiseStalls/search?stallName=${stallName}`);
+
+        res.json(response.data);
+
+    } catch (error) {
+        return res.status(500).json({ error: "Failed to fetch details merchandistall"});
+    }
+}
+
+const getAfterPartiesByCity = async(req, res) => {
+    const inputErrors = validateAfterPartiesQueryParams(req.query);
+
+    if (inputErrors.length > 0) {
+        return res.status(400).json({inputErrors});
+    }
+    try {
+        const { city } = req.query;
+        const response = await axiosInstance.get(`/afterParties/search?city=${city}`);
+
+        res.json(response.data);
+    } catch (error) {
+        return res.status(500).json({ error: "failed to fetch details after Party"});
+    }
+}
 
 const getConcerts = async(req, res) => {
     try {
@@ -72,4 +123,11 @@ const getAfterParties = async(req, res) => {
     }
 }
 
-module.exports = { getConcerts, getMerchandiseStalls, getAfterParties }
+module.exports = { 
+    getConcerts, 
+    getMerchandiseStalls, 
+    getAfterParties, 
+    getConcertsByArtistAndCity, 
+    getMerchandiseStallsByStallName,
+    getAfterPartiesByCity
+ }
