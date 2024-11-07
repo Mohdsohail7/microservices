@@ -1,4 +1,55 @@
 const { axiosInstance } = require("../lib/axios");
+const { validateFlightQueryParams,validateHotelsQueryParams, validateSitesQueryParams } = require("../validations/index");
+
+const getFlightsByOriginAndDestination = async(req, res) => {
+    const inputErrors = validateFlightQueryParams(req.query);
+    
+    if (inputErrors.length > 0) {
+        return res.status(400).json({ inputErrors });
+    }
+    try {
+        const { origin, destination } = req.query;
+        const response = await axiosInstance.get(`/flights/search?origin=${origin}&destination=${destination}`);
+
+        res.json(response.data);
+    } catch (error) {
+        return res.status(500).json({ error: "Failed to details flight by origin and destination"});
+    }
+}
+
+const getHotelsByLocation = async(req, res) => {
+    const inputErrors = validateHotelsQueryParams(req.query);
+
+    if (inputErrors.length > 0) {
+        return res.status(400).json({ inputErrors });
+    }
+
+    try {
+        const { location } = req.query;
+        const response = await axiosInstance.get(`/hotels/search?location=${location}`);
+        res.json(response.data);
+
+    } catch (error) {
+        return res.status(500).json({ error: "Failed to details hotel by location"});
+    }
+}
+
+const getSitesByLocation = async(req, res) => {
+    const inputErrors = validateSitesQueryParams(req.query);
+
+    if (inputErrors.length > 0) {
+        return res.status(400).json({ inputErrors });
+    }
+
+    try {
+        const { location } = req.query;
+        const response = await axiosInstance.get(`/sites/search?location=${location}`);
+
+        res.json(response.data);
+    } catch (error) {
+        return res.status(500).json({ error: "Failed to details site by location"});
+    }
+}
 
 const getFlights = async(req, res) => {
     try {
@@ -77,4 +128,11 @@ const getSites = async(req, res) => {
     }
 }
 
-module.exports = { getFlights, getHotels, getSites };
+module.exports = { 
+    getFlights,
+     getHotels, 
+     getSites,
+     getFlightsByOriginAndDestination,
+    getHotelsByLocation,
+    getSitesByLocation
+     };

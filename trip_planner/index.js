@@ -3,7 +3,14 @@ const cors = require("cors");
 require("dotenv").config();
 
 const { createItinerary, getItinerary } = require("./controllers/dataController");
-const { getFlights, getHotels, getSites } = require("./controllers/itineraryController");
+const { 
+    getFlights, 
+    getHotels, 
+    getSites,
+    getFlightsByOriginAndDestination,
+    getHotelsByLocation,
+    getSitesByLocation
+} = require("./controllers/itineraryController");
 const { sequelize } = require("./models");
 
 const app = express();
@@ -18,6 +25,10 @@ app.get("/itinerary/:id", getItinerary);
 app.get("/data/flights", getFlights);
 app.get("/data/hotels", getHotels);
 app.get("/data/sites", getSites);
+app.get("/data/flights/search", getFlightsByOriginAndDestination);
+app.get("/data/hotels/search", getHotelsByLocation);
+app.get("/data/sites/search", getSitesByLocation);
+
 
 sequelize.authenticate().then(() => {
     console.log("database connected.");
