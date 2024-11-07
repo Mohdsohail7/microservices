@@ -1,4 +1,4 @@
-const { axiosInstance } = require("../lib/axios");
+const axiosInstance = require("../lib/axios");
 const { validateFlightQueryParams,validateHotelsQueryParams, validateSitesQueryParams } = require("../validations/index");
 
 const getFlightsByOriginAndDestination = async(req, res) => {
